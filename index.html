@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PATAANGUNA</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gijgo@1.9.13/css/gijgo.min.css"> 
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.13/js/gijgo.min.js"></script>
+    
+    <script type="module" src="firebaseConf.js" defer></script>
+    <script type="module" src="/script/authFunctions.js"></script>
+    <script type="module" src="/script/profileFunctions.js"></script>
+    <script type="module" src="/script/forumFunctions.js"></script>
+    <script type="module" src="/script/notificationFunctions.js"></script>
+    <script type="module" src="/script/eventFunctions.js"></script>
+    <script type="module" src="/script/authState.js"></script>
+    <script type="module" src="/script/chatFunction.js"></script>
+    <script type="module" src="/script/activityFunction.js"></script>
+    <link rel="stylesheet" href="ss.css">
+</head>
+<body>
+<div id="apps">
+<!-- Login/Registration Modal -->
+<div id="logRegForm" class="modal-overlay" style="display: none;" onclick="closeModal(event)">
+  <div class="modal-content">
+      
+      <!-- Tab Navigation -->
+      <div class="tab-buttons">
+          <button class="active" onclick="switchTab('login')">Login</button>
+          <button onclick="switchTab('register')">Register</button>
+      </div>
+
+      <div class="tab-content">
+          <!-- Login Form -->
+          <form id="login-form" action="#" method="post" style="display: block;">
+              <div class="form-group">
+                  <input type="email" id="logMail" class="form-control" placeholder="Email">
+              </div>
+              <div class="form-group">
+                  <input type="password" id="logPwd" class="form-control" placeholder="Password">
+              </div>
+              <div class="form-group">
+                  <input type="submit" id="login" value="Masuk">
+              </div>
+          </form>
+
+          <!-- Register Form -->
+          <form id="register-form" action="#" method="post" style="display: none;">
+              <div class="form-group">
+                  <input type="text" name="fullname" class="form-control" id="fName" placeholder="Nama Lengkap">
+              </div>
+              <div class="form-group">
+                  <input type="text" name="username" class="form-control" id="usName" placeholder="Nama Pengguna">
+              </div>
+              <div class="form-group">
+                  <select class="form-control" id="provinsi">
+                      <option value="">Pilih Lokasi</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <input type="text" id="dob" class="form-control" placeholder="Tanggal Lahir">
+              </div>
+              <div class="form-group">
+                  <input type="email" id="mail" class="form-control" placeholder="Email">
+              </div>
+              <div class="form-group">
+                  <input type="password" id="pwd" class="form-control" placeholder="Password">
+              </div>
+              <div class="form-group">
+                  <input type="password" name="confirm-password" class="form-control" placeholder="Konfirmasi Password">
+              </div>
+              <div class="form-group">
+                  <button id="submitReg">Register Now</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">PATAANGUNA</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="literasiDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Literasi Kesehatan
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="literasiDropdown">
+                    <li v-for="(item, key) in menuItems" :key="key">
+                        <a class="dropdown-item" href="#" @click.prevent="handleClickAndChange(key), switchSection('home')">
+                            {{ item.title }}
+                        </a>
+                    </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="tesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Tes Pemahaman
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="tesDropdown">
+                    <li>
+                        <a class="dropdown-item" href="#" @click.prevent="switchSection('quiz')">Kuis</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" @click.prevent="switchSection('evaluasi')">Evaluasi</a>
+                    </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="konsultasiDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Konsultasi
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="konsultasiDropdown">
+                    <li><a class="dropdown-item" href="#" @click.prevent="switchSection('konsultasi')">Konsultasi</a></li>
+                    <li><a class="dropdown-item" href="#" @click.prevent="switchSection('forum')">Forum</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="komunitasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Komunitas
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="komunitasDropdown">
+                    <li><a class="dropdown-item" href="#" @click.prevent="switchSection('workshop')">Kegiatan Virtual</a></li>
+                    <li><a class="dropdown-item" href="#" @click.prevent="switchSection('cerita')">Cerita Inspiratif</a></li>
+                </ul>
+              </li>
+          </ul>
+             
+          <ul class="navbar-nav ms-auto">
+              <!-- Signed-in UI (Initially Hidden) -->
+              <div id="signedInNav" style="display: none;">
+                <li class="nav-item dropdown position-relative">
+                    <a class="nav-link d-flex align-items-center" href="#" id="notificationDropdown" role="button" 
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-bell fs-4"></i>
+                        <span class="d-lg-none ms-3">Notifikasi</span>
+                        <span v-if="unreadCount > 0" class="position-absolute badge rounded-pill bg-danger">
+                            {{ unreadCount }}
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end notification-menu" aria-labelledby="notificationDropdown">
+                        <li class="dropdown-header d-flex justify-content-between align-items-center">
+                            <button class="btn btn-sm btn-link text-danger" @click="markAllAsRead" 
+                                    v-if="unreadCount > 0">Tandai semua terbaca</button>
+                        </li>
+                        <div class="notification-list">
+                            <li v-for="notification in notifications" :key="notification.id" 
+                                :class="['notification-item', { 'unread': !notification.read }]"
+                                @click.stop.prevent="handleNotificationClick(notification)">
+                                <div class="notification-content">
+                                    <h6>{{ notification.title }}</h6>
+                                    <p 
+                                        class="text-muted"
+                                        :style="{
+                                            whiteSpace: expandedNotificationId === notification.id ? 'normal' : 'nowrap',
+                                            overflow: expandedNotificationId === notification.id ? 'visible' : 'hidden',
+                                            textOverflow: expandedNotificationId === notification.id ? 'unset' : 'ellipsis'
+                                        }"
+                                        >
+                                        {{ notification.message }}
+                                    </p>
+                                    <small>{{ formatNotificationTime(notification.timestamp) }}</small>
+                                </div>
+                                <div class="notification-actions">
+                                    <button class="btn btn-sm btn-link text-danger" 
+                                            @click.stop="deleteNotification(notification.id)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </li>
+                            <li v-if="notifications.length === 0" class="text-center py-2 text-muted">
+                                Tidak ada notifikasi
+                            </li>
+                        </div>
+                    </ul>
+                </li>
+          
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
+                      <span id="profileIcon" class="bi bi-person-circle fs-4"></span>
+                      <img id="profilePic" class="rounded-circle" width="32" height="32" style="display: none;">
+                      <span id="usernameDisplay">Username</span>
+                      <div id="profileHoverInfo" class="profile-hover-info">
+                        <strong id="fullNameDisplay">Full Name</strong><br>
+                        <small id="emailDisplay">mail</small>
+                    </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                      <li style="display: flex;"></li><a class="dropdown-item"><span id="userAge" style="border-right:2px solid black; padding-right: 10px;">Unknown</span><span id="userLocation" style="margin-left:10px">Unknown</span></a>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="setting.html">Pengaturan</a></li>
+                      <li><a class="dropdown-item" href="#" @click="showActivityHistory = true">Riwayat Aktivitas</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#" id="logoutBtn">Keluar</a></li>
+                    </ul>
+                  </li>
+                  
+                </div>
+          
+              <!-- Signed-out UI -->
+              <div id="signedOutNav">
+                  <li class="nav-item">
+                      <a class="nav-link btn btnGreen" href="#" onclick="document.getElementById('logRegForm').style.display = 'block';">
+                          Masuk
+                      </a>
+                  </li>
+              </div>
+          </ul>
+      </div>
+  </div>
+</nav>
+
+<!-- Jumbotron -->
+<div class="jumbotron text-center">
+  <h1 class="display-4">Bijak berperilaku, Masa Depan Sehat Tanpa Risiko</h1>
+  <p class="lead">
+      Membangun karakter dan kesadaran remaja melalui penguatan nilai budaya Buton dengan meningkatkan pemahaman 
+      akan konsekuensi perilaku seksual berisiko, mengembangkan keterampilan komunikasi dan kemampuan menolak hal 
+      negatif, serta perbaikan hubungan antar generasi untuk menumbuhkan identitas diri dan kebanggaan terhadap 
+      budaya Buton. 
+  </p>
+  <button class="btn btnBrown" @click="toggleSection('about')"><b>Pelajari Lebih Lanjut</b></button>
+
+  <button class="btn btnGreen"  @click="toggleSection('contact')"><b>Hubungi Kami</b></button>
+  
+</div>
+
+<header>
+  <div class="container">
+      <div class="row col-sm-10 d-flex justify-content-center text-center">
+          <h2 v-if="currentTitle">{{ currentTitle }}</h2>
+          <video v-if="videoVisible" :key="currentVideo" id="mediaplayer" autoplay muted controls>
+            <source :src="currentVideo" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+      </div>
+  </div>
+</header>
+
+<section class="content-section" v-if="activeSection === 'home'">
+  <div class="container">
+      <div v-for="(section, index) in sections" :key="index" class="row content-item">
+          
+          <!-- Left or Right Image based on Index -->
+          <div v-if="index % 2 === 0" class="col-sm-3 position-relative">
+              <img :src="section.img" class="img-fluid" :alt="section.title" style="height:-webkit-fill-available; width:-webkit-fill-available; object-fit: contain;"/>
+              <button v-if="!isSubmenuActive" class="btn btn-secondary position-absolute translate-middle" @click="viewSection(section)">Lihat</button>
+          </div>
+
+          <div class="col-sm-7">
+              <h2>{{ section.title }}</h2>
+              <p>{{ section.text }}</p>
+          </div>
+
+          <div v-if="index % 2 !== 0" class="col-sm-3 position-relative">
+              <img :src="section.img" class="img-fluid" :alt="section.title" style="height:-webkit-fill-available; width:-webkit-fill-available; object-fit: contain;"/>
+              <button v-if="!isSubmenuActive" class="btn btn-secondary position-absolute translate-middle" @click="viewSection(section)">Lihat</button>
+          </div>
+
+      </div>
+  </div>
+</section>
+
+<section class="content-section" v-if="activeSection === 'kategori'">
+    <div class="container">
+        <div v-for="(item, index) in filteredList" :key="index" class="row content-item">
+            <div v-if="index % 2 === 0" class="col-sm-3 position-relative">
+                <img :src="item.img" class="img-fluid" :alt="item.title" style="height:-webkit-fill-available; width:-webkit-fill-available;"/>
+                <button v-if="!isSubmenuActive" class="btn btn-secondary position-absolute translate-middle" @click="viewCategory(item)">Lihat</button>
+            </div>
+
+            <div class="col-sm-7">
+                <h2>{{ item.title }}</h2>
+                <p>{{ item.text }}</p>
+            </div>
+
+            <div v-if="index % 2 !== 0" class="col-sm-3 position-relative">
+                <img :src="item.img" class="img-fluid" :alt="item.title" style="height:-webkit-fill-available; width:-webkit-fill-available;"/>
+                <button v-if="!isSubmenuActive" class="btn btn-secondary position-absolute translate-middle" @click="viewCategory(item)">Lihat</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content-section" v-if="activeSection === 'quiz'" id="quiz">
+  <div class="container">
+      <div v-if="!quizFinished">
+        <div v-for="(question, qIndex) in questions" :key="qIndex" class="mb-4">
+          <h4>{{ qIndex + 1 }}. {{ question.text }}</h4>
+    
+          <div class="list-group">
+            <label v-for="(option, index) in shuffledQuestions[qIndex]" :key="index" class="list-group-item">
+              <input type="radio" v-model="userAnswers[qIndex]" :value="option" :disabled="submitted" class="me-2">
+              {{ option.text }}
+            </label>
+          </div>
+    
+          <div v-if="submitted" class="mt-2 alert" :class="feedbackClass(qIndex)">
+            <p v-if="!userAnswers[qIndex].correct">
+              ❌ Jawaban kamu: <strong>{{ userAnswers[qIndex].text }}</strong>
+            </p>
+            <p>✅ Jawaban benar: <strong>{{ correctAnswer(qIndex).text }}</strong></p>
+            <p>{{ correctAnswer(qIndex).explanation }}</p>
+          </div>
+        </div>
+    
+        <button v-if="!submitted" class="btn btn-primary mt-3" @click="submitQuiz" :disabled="userAnswers.includes(null)">Submit</button>
+        <div v-if="submitted" class="mt-3">
+          <button class="btn btn-success me-2" @click="restartQuiz">Ulangi</button>
+          <button class="btn btn-danger" @click="exitQuiz">Keluar</button>
+        </div>
+      </div>
+      </div>
+</section>
+
+<section class="content-section" v-if="activeSection === 'evaluasi'" id="evaluasi">
+  <div class="container">
+        <!-- Form is only visible if not submitted -->
+  <div v-if="!submitted">
+  <form @submit.prevent="hitungRisiko">
+  <div v-for="(pertanyaan, index) in daftarPertanyaan" :key="index" class="mb-3">
+  <label :for="index" class="form-label fw-bold">{{ index + 1 }}. {{ pertanyaan.teks }}</label>
+
+  <!-- Radio Buttons -->
+  <div v-if="pertanyaan.tipe === 'radio'">
+      <div v-for="(opsi, i) in pertanyaan.opsi" :key="i" class="form-check">
+          <input class="form-check-input" type="radio" :id="`${index}-${i}`" :name="`pertanyaan-${index}`" 
+              :value="opsi.nilai" v-model="jawaban[index]">
+          <label class="form-check-label" :for="`${index}-${i}`">{{ opsi.teks }}</label>
+      </div>
+  </div>
+
+  <!-- Checkbox -->
+  <div v-else-if="pertanyaan.tipe === 'checkbox'">
+      <div v-for="(opsi, i) in pertanyaan.opsi" :key="i" class="form-check">
+          <input class="form-check-input" type="checkbox" :id="`${index}-${i}`" 
+              :value="opsi.nilai" v-model="jawaban[index]">
+          <label class="form-check-label" :for="`${index}-${i}`">{{ opsi.teks }}</label>
+      </div>
+  </div>
+
+  <!-- Number Input -->
+  <div v-else>
+      <input style="width:25%;" class="form-control" type="number" :id="index" v-model="jawaban[index]">
+  </div>
+</div>
+
+<button class="btn btn-primary mt-3 w-55" @click="hitungRisiko">
+  Submit
+</button>
+</form>
+</div>
+
+<!-- Hasil Evaluasi - Shown after submission -->
+<div v-if="submitted" class="modal-overlay">
+  <div class="evaluation-modal">
+    <div class="modal-body">
+        <h2>Hasil Evaluasi</h2>
+      <p class="alert" :class="resultClass">{{ hasilEvaluasi }}</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" @click="resetKalkulator">Tutup</button>
+    </div>
+  </div>
+</div>
+
+  </div>
+</section>
+
+<section class="content-section" v-if="activeSection === 'workshop'" id="workshop">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4" v-for="workshop in workshops" :key="workshop.id">
+                <div class="thumbnail" style="background-color: white; padding: 20px; border-radius: 10px; margin: 10px;">
+                    <img :src="workshop.image" :alt="workshop.title" style="max-width: 100%; height: auto; margin-bottom: 15px;">
+                    <h5><strong>{{ workshop.title }}</strong></h5>
+                    <p>{{ workshop.date }}</p>
+                    <button v-if="!workshop.registered" class="btn btn-primary" @click="openWorkshopRegistrationModal(workshop)">Daftar</button>
+                    <button v-else class="btn btn-success" disabled>Terdaftar</button>
+                    <div :class="{ 'hidden-admin': !isAdmin }" class="icon-container">
+                        <a href="#" class="icon-link icon-edit" @click="editWorkshop(workshop)"><i class="bi bi-pencil-fill"></i></a>
+                        <a href="#" class="icon-link icon-delete" @click="deleteEvent(workshop.id)"><i class="bi bi-trash3-fill"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" :class="{ 'hidden-admin': !isAdmin }">
+                <div class="profile-card text-center">
+                    <button type="button" class="btn btn-info add-new" @click="openAdminModal()">
+                        <i class="fa fa-plus"></i> Tambah Event
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Workshop Management Modal -->
+    <div class="modal fade" id="workshopManageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tambah Event</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+                <input type="file" @change="handleEventImageChange" accept="image/*" class="form-control">
+                <img :src="eventImagePreview" alt="Preview" style="max-width: 100%; height: auto; margin-top: 10px;" v-if="eventImagePreview">
+            </div>
+            <div class="mb-3">
+                <label for="eventTitle" class="form-label">Judul Event:</label>
+                <input type="text" id="eventTitle" v-model="eventTitle" class="form-control" placeholder="Masukkan judul event">
+            </div>
+            <div class="mb-3">
+                <label for="eventDate" class="form-label">Tanggal Event:</label>
+                <input type="date" id="eventDate" v-model="eventDate" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="eventDesc" class="form-label">Deskripsi:</label>
+                <textarea class="form-control eventDesc" v-model="eventDescription" placeholder="Deskripsi event"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-primary" @click="saveEvent">Simpan</button>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!-- Workshop Registration Modal -->
+    <div class="modal fade" v-show="showRegistrationModal" id="workshopRegistrationModal" tabindex="-1" aria-hidden="true" style="display: block; background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Daftar Workshop</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img :src="selectedWorkshop.image" alt="Workshop Image" class="img-fluid mb-3" v-if="selectedWorkshop">
+                    <h4 v-if="selectedWorkshop">{{ selectedWorkshop.title }}</h4>
+                    <p v-if="selectedWorkshop"><strong>Tanggal:</strong> {{ selectedWorkshop.date }}</p>
+                    <p v-if="selectedWorkshop"><strong>Deskripsi:</strong> {{ selectedWorkshop.description }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btnBatal" data-bs-dismiss="modal">Batal</button>
+                    <button 
+                        type="button" 
+                        class="btn" 
+                        :class="selectedWorkshop?.registered ? 'btn-success' : 'btn-primary'"
+                        :disabled="selectedWorkshop?.registered"
+                        @click="confirmWorkshopRegistration"
+                    >
+                        {{ selectedWorkshop?.registered ? 'Terdaftar' : 'Daftar' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content-section" v-if="activeSection === 'konsultasi'" id="konsultasi">
+    <div class="container">
+        <div class="row">
+             <!-- Loading State -->
+            <div v-if="!experts.length" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div class="col-md-4" v-for="expert in experts" :key="expert.id">
+                <div class="profile-card text-center">
+                    <img :src="expert.image" :alt="expert.name">
+                    <h2>{{ expert.name }}</h2>
+                    <p>{{ expert.specialization }} || {{ expert.experience }} tahun</p>
+                    <button class="btn btn-primary" @click="openExpertChat(expert.id)">Chat</button>
+                    
+                    <!-- Admin-only controls (always in DOM, hidden for non-admins) -->
+                    <div :class="{ 'hidden-admin': !isAdmin }" class="icon-container">
+                        <a href="#" class="icon-link icon-edit" @click="openEditExpertModal(expert)"><i class="bi bi-pencil-fill"></i></a>
+                        <a href="#" class="icon-link icon-delete" @click="deleteExpert(expert)"><i class="bi bi-trash3-fill"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- "Tambah Konsultan" button always exists but is hidden for non-admins -->
+            <div class="col-md-4" :class="{ 'hidden-admin': !isAdmin }">
+                <div class="profile-card text-center">
+                    <button type="button" class="btn btn-info add-new" @click="openAddExpertModal">
+                        <i class="fa fa-plus"></i> Tambah Konsultan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Expert modal -->
+    <div v-if="showExpertModal" id="addExpertModal" class="modal fade show" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ isEditing ? "Edit Konsultan" : "Tambah Konsultan" }}</h5>
+                </div>
+                <div class="modal-body">
+                    <div v-if="newExpert.image">
+                        <img :src="newExpert.image" alt="Preview" class="img-thumbnail" style="max-width: 150px;">
+                    </div>
+                    <div class="mb-3">
+                        <input type="file" @change="handleFileUpload" class="form-control" lang="id-ID">
+                    </div>
+                    <input type="text" v-model="newExpert.name" placeholder="Nama" class="form-control mb-2">
+                    <input type="text" v-model="newExpert.specialization" placeholder="Spesialisasi" class="form-control mb-2">
+                    <input type="number" v-model="newExpert.experience" placeholder="Pengalaman (tahun)" class="form-control mb-2">   
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btnBatal" @click="closeAddExpertModal">Batal</button>
+                    <button class="btn btn-primary" @click="saveExpert">{{ isEditing ? "Simpan" : "Tambah" }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Expert Chat Interface -->
+    <div id="expertChatContainer" v-if="isExpert">
+        <div class="chat-list-container">
+            <div class="chat-list-header">
+                <h4>Percakapan</h4>
+                <div class="user-count">
+                    {{ myChats.length }} chat{{ myChats.length !== 1 ? 's' : '' }}
+                </div>
+            </div>
+            
+            <div class="user-list">
+                <!-- Loading state -->
+                <div v-if="myChats === null" class="text-center py-3">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                
+                <!-- Empty state -->
+                <div v-else-if="myChats.length === 0" class="empty-state">
+                    <p>Belum ada percakapan</p>
+                </div>
+                
+                <!-- Chat list -->
+                <div v-for="chat in myChats" 
+                     :key="chat.id" 
+                     @click="openChatWithUser(chat)"
+                     class="user-item"
+                     :class="{ 
+                         'active': activeChat?.id === chat.id,
+                         'unread': chat.unreadCount > 0
+                     }">
+                    
+                    <div class="user-avatar">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    
+                    <div class="user-info">
+                        <div class="user-meta">
+                            <span class="username">
+                                Anonymous 
+                                <span v-if="chat.isCurrentUser" class="badge bg-primary">Anda</span>
+                            </span>
+                            <span class="time">{{ formatTime(chat.lastMessageTime) }}</span>
+                        </div>
+                        <p class="message-preview">
+                            <span v-if="chat.isCurrentUser" class="text-muted">Anda: </span>
+                            {{ chat.lastMessage || 'Belum ada pesan' }}
+                        </p>
+                    </div>
+                    
+                    <div v-if="chat.unreadCount > 0" class="unread-badge">
+                        {{ chat.unreadCount }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Window -->
+        <div class="chat-window-container">
+            <div v-if="!activeChat" class="start-chat">
+                <p>Pilih percakapan untuk memulai</p>
+            </div>
+            <div v-if="activeChat" class="chat-window">
+                <div class="chat-header">
+                    <h4>Chat dengan Anonymous</h4>
+                </div>
+                
+                <div class="message-container">
+                    <!-- Loading state -->
+                    <div v-if="loadingMessages" class="loading-messages">
+                        <div class="spinner"></div>
+                        <p>Memuat pesan...</p>
+                    </div>
+                    
+                    <!-- Empty state (only show if not loading and no messages) -->
+                    <div v-else-if="!loadingMessages && chatMessages.length === 0" 
+                         class="empty-messages">
+                        <p>Belum ada pesan</p>
+                    </div>
+                    
+                    <!-- Messages list -->
+                    <div v-else>
+                        <div v-for="msg in chatMessages" :key="msg.id" 
+                            :class="['message', msg.isCurrentUser ? 'sent' : 'received']">
+                            <div class="message-content">
+                                {{ msg.text }} <!-- Change this line -->
+                            </div>
+                            <small class="time" style="color:white;">{{ formatTime(msg.timestamp) }}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="message-input-container">
+                    <input v-model="newMessage" 
+                           @keyup.enter="sendMessage"
+                           placeholder="Ketik pesan...">
+                    <button @click="sendMessage" 
+                            :disabled="!newMessage.trim()">
+                        <i class="bi bi-send-fill"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>    
+</section>
+
+<section class="content-section" v-if="activeSection === 'forum'" id="forum">
+  <div class="container">
+    <div class="inner-main">
+        <div class="inner-main-header d-flex justify-content-between align-items-center">
+            <a class="nav-link nav-icon rounded-circle nav-link-faded mr-3 d-md-none" href="#" data-bs-toggle="inner-sidebar">
+                <i class="material-icons">arrow_forward_ios</i>
+            </a>
+            <div class="d-flex align-items-center">
+                <select class="custom-select custom-select-sm w-auto mr-2 same-height">
+                    <option selected="">Terbaru</option>
+                    <option value="1">Terpopuler</option>
+                </select>
+                <span class="input-icon input-icon-sm w-auto same-height">
+                    <input type="text" class="form-control form-control-sm bg-gray-200 border-gray-200 shadow-none" placeholder="Cari" />
+                </span>
+            </div>
+            <nav aria-label="Forum pagination">
+                <ul class="pagination mb-0">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" id="nextPage">»</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
+            <div v-for="forum in forums" :key="forum.id" class="cardF mb-2">
+                <div class="card-bodyF p-2 p-sm-3">
+                    <div class="media forum-item">
+                        <img :src="forum.userProfilePic" 
+                            class="mr-3 rounded-circle" width="50" height="50" alt="User"
+                            @error="handleImageError">
+                        <div class="media-body">
+                                <h6>{{ forum.title }}</h6>
+                                <p class="text-secondary">{{ forum.description }}</p>
+                                <p class="text-muted">
+                                    <small>Posted by <b>{{ userProfiles[forum.userId]?.username || 'Anonymous' }}</b></small>&nbsp;&nbsp;
+                                    <small class="text-secondary font-weight-bold">
+                                        {{ forum.timestamp?.toDate().toLocaleString() }}
+                                    </small>
+                                    <small class="text-secondary ms-2">
+                                        {{ forum.replyCount || 0 }} {{ forum.replyCount === 1 ? 'reply' : 'replies' }}
+                                    </small>
+                                </p>
+                                
+                                <!-- Reply section -->
+                                <div class="mt-3">
+                                  <button class="btn btn-sm btn-outline-primary" 
+                                          @click="toggleForumReplies(forum.id)">
+                                    {{ showReplies[forum.id] ? 'Hide Replies' : 'Show Replies' }}
+                                  </button>
+                                  
+                                  <div v-if="showReplies[forum.id]" class="mt-3">
+                                    <!-- Reply form -->
+                                    <div class="mb-3">
+                                      <textarea class="form-control" 
+                                                v-model="replyMessages[forum.id]" 
+                                                placeholder="Ketik Balasan"></textarea>
+                                      <button class="btn btn-success mt-2" 
+                                              @click="addReply(forum.id)">
+                                        Balas
+                                      </button>
+                                    </div>
+                                    
+                                    <!-- Replies list -->
+                                    <div v-if="forumReplies[forum.id]?.length > 0" class="replies-container">
+                                      <div v-for="reply in forumReplies[forum.id]" :key="reply.id" 
+                                           class="reply-item p-2 mb-2 bg-light rounded">
+                                        <div class="d-flex align-items-start">
+                                            <img :src="forum.userProfilePic" 
+                                            class="mr-3 rounded-circle" width="50" height="50" alt="User"
+                                            @error="handleImageError">
+                                        <div class="media-body">
+                                          <div>
+                                            <strong>{{ reply.username || userProfiles[reply.userId]?.username || 'Anonymous' }}</strong>
+                                            <p class="mb-1">{{ reply.replyMessage }}</p>
+                                            <small class="text-muted">
+                                              {{ reply.timestamp?.toDate?.()?.toLocaleString() || 'Just now' }}
+                                            </small>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div v-else class="text-muted">
+                                      Tidak ada balasan
+                                    </div>
+                                  </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mb-4">
+        <h4>Tambah Topik Diskusi</h4>
+        <input type="text" class="form-control" v-model="newForumTitle" placeholder="Judul Diskusi">
+        <textarea class="form-control mt-2" v-model="newForumDescription" placeholder="Deskripsi..."></textarea>
+        <button class="btn btn-success mt-2" @click="addForumTopic">Tambah</button>
+    </div>
+  </div>
+</section>
+
+<section class="content-section" v-if="activeSection === 'cerita'" id="cerita">
+  <div class="container">
+    <div v-for="(story, index) in stories" :key="story.id" class="row content-item">
+      
+      <!-- Image on left for even, right for odd -->
+      <div :class="['col-sm-3', {'order-sm-2': index % 2 !== 0}]" class="position-relative">
+        <img :src="story.img" class="img-fluid" style="height:-webkit-fill-available; width:-webkit-fill-available; object-fit: contain;" 
+             :alt="story.title">
+        <button @click="openStoryModal(story)" 
+                class="btn btn-secondary position-absolute translate-middle">
+          {{ storyTypes[story.type].buttonText }}
+        </button>
+      </div>
+      
+      <!-- Content -->
+      <div :class="['col-sm-7', {'order-sm-1': index % 2 !== 0}]">
+        <h2>{{ story.title }}</h2>
+        <p>{{ story.description }}</p>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Story Modal -->
+  <div v-if="showModal" class="modal-overlay" @click.self="closeStoryModal">
+    <div class="modal-content-custom">
+      <div class="modal-header-custom">
+        <h3>{{ currentCerita.title }}</h3>
+        <button @click="closeStoryModal" class="btn-close-custom">&times;</button>
+      </div>
+      <div class="modal-body-custom">
+        <div v-if="currentCerita.type === 'article'">
+          <p style="white-space: pre-line;">{{ currentCerita.content.text }}</p>
+        </div>
+        <div v-else-if="currentCerita.type === 'video'">
+          <div class="ratio ratio-16x9">
+            <iframe :src="currentCerita.content.url" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div v-if="showAbout" class="about-section" id="aboutus">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7 col-sm-6">
+                <div class="about-title clearfix">
+                    <h2>Mengenai <span>PATAANGUNA</span></h2>
+                    <p class="about-paddingB">
+                        Membangun karakter dan kesadaran remaja melalui penguatan nilai budaya Buton dengan meningkatkan pemahaman akan konsekuensi perilaku seksual berisiko, mengembangkan keterampilan komunikasi dan kemampuan menolak hal negatif, serta perbaikan hubungan antar generasi untuk menumbuhkan identitas diri dan kebanggaan terhadap budaya Buton. 
+                    </p>
+                    <div class="about-icons" style="margin-left:-1cm;">
+                        <ul>
+                            <li><a href="https://www.facebook.com" target="_blank"><i class="fa fa-facebook-square fa-3x social facebook-icon"></i></a></li>
+                            <li><a href="https://www.twitter.com" target="_blank"><i class="fa fa-twitter-square fa-3x social twitter-icon"></i></a></li>
+                            <li><a href="https://www.instagram.com" target="_blank"><i class="fa fa-instagram fa-3x social instagram-icon"></i></a></li>
+                            <li><a href="mailto:your_email@example.com" target="_blank"><i class="fa fa-envelope-square fa-3x social email-icon"></i></a></li>
+                         </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 col-sm-6">
+                <div class="about-img">
+                    <img src="https://devitems.com/preview/appmom/img/mobile/2.png" alt="">
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>
+
+<div v-if="showContact"  class="contact-section" id="contactus">
+<div class="container">
+<div class="row">
+    <div class="col-md-6">  
+        <form action="mailto:nama_email@example.com" method="post" id="contact-form">
+            <h2>Hubungi Kami</h2>
+            <div class="row mb-3">  
+                <div class="col-md-6">  
+                    <input id="name" name="name" type="text" class="form-control" placeholder="Nama">
+                </div>
+                <div class="col-md-6">
+                    <input id="email" name="email" type="email" class="form-control" placeholder="Email">
+                </div>
+            </div>
+            <div class="mb-3">  
+                <textarea id="message" name="message" class="form-control" placeholder="Tulis Pesan" rows="5"></textarea>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">  
+                <button id="contact-submit" type="submit" class="btn btnGreen">Kirim</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+<!-- Chat Modal -->
+<div v-if="chatOpen" class="modalCh">
+    <div class="modal-contentCh">
+        <div class="modal-headerCh">
+            <h4 id="chatTitle">
+                Chat dengan {{ activeChat.expertName }}
+            </h4>
+            <span class="close" @click="closeChat">&times;</span>
+        </div>
+        
+        <div class="modal-disclaimer">
+            <i class="bi bi-info-circle"></i> Identitas Anda akan tetap anonim selama chat berlangsung
+        </div>
+        
+        <!-- Loading indicator -->
+        <div v-if="loadingMessages" class="text-center py-3">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        
+        <!-- Chat messages -->
+        <div class="chat-box" ref="chatBox">
+            <div v-for="msg in chatMessages" :key="msg.id" 
+                :class="['message', msg.isCurrentUser ? 'sent' : 'received']">
+                <div class="message">
+                    <div class="message-content">
+                        {{ msg.text || msg.message }}
+                    </div>
+                </div>
+                <small class="time">{{ formatTime(msg.timestamp) }}</small>
+            </div>
+            
+            <div v-if="!loadingMessages && chatMessages.length === 0" class="empty-chat">
+                <p>Belum ada pesan. Mulailah percakapan!</p>
+            </div>
+        </div>
+        
+        <!-- Message input -->
+        <div class="message-input">
+            <input type="text" 
+                   v-model="newMessage" 
+                   placeholder="Ketik Pesan" 
+                   @keyup.enter="sendMessage"
+                   :disabled="loadingMessages">
+            <button class="btnGreen" @click="sendMessage" 
+                    :disabled="!newMessage.trim() || loadingMessages">
+                Kirim
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Activity History Modal -->
+<div v-if="showActivityHistory" class="modal-overlay" @click.self="showActivityHistory = false">
+    <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-header" style="place-content: space-between;">
+            <h3>Riwayat Aktivitas</h3>
+            <button @click="showActivityHistory = false" class="btn-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <!-- Progress Bars -->
+            <div class="progress-section mb-4">
+                <h4>Progres Pembelajaran</h4>
+                <div class="progress-container mb-3">
+                    <label>Materi Dibaca: {{ calculateProgress().materials.completed }}/{{ calculateProgress().materials.total }}</label>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" 
+                             :style="{ width: calculateProgress().materials.percentage + '%' }">
+                            {{ calculateProgress().materials.percentage }}%
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <label>Kuis Diselesaikan: {{ calculateProgress().quizzes.completed }}/{{ calculateProgress().quizzes.total }}</label>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" 
+                             :style="{ width: calculateProgress().quizzes.percentage + '%' }">
+                            {{ calculateProgress().quizzes.percentage }}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Activity List -->
+            <h4>Riwayat Terkini</h4>
+            <div class="activity-list">
+                <div v-for="activity in userActivities" :key="activity.id" class="activity-item">
+                    <div class="activity-icon">
+                        <i v-if="activity.type === 'reading'" class="bi bi-book"></i>
+                        <i v-if="activity.type === 'quiz'" class="bi bi-check-circle"></i>
+                    </div>
+                    <div class="activity-details">
+                        <strong>{{ activity.name }}</strong>
+                        <small>{{ new Date(activity.timestamp?.toDate()).toLocaleString() }}</small>
+                    </div>
+                </div>
+                <div v-if="userActivities.length === 0" class="text-muted">
+                    Belum ada aktivitas tercatat
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@3.2.37/dist/vue.global.js"></script>
+<script type="module" src="script.js"></script>
+</body>
+<script>
+function switchTab(tab) {
+    document.getElementById('login-form').style.display = (tab === 'login') ? 'block' : 'none';
+    document.getElementById('register-form').style.display = (tab === 'register') ? 'block' : 'none';
+    const loginButton = document.querySelector('.tab-buttons button:first-child');
+    const registerButton = document.querySelector('.tab-buttons button:last-child');
+
+    // Remove 'active' from both buttons
+    loginButton.classList.remove('active');
+    registerButton.classList.remove('active');
+
+    // Add 'active' to the clicked button
+    if (tab === 'login') {
+        loginButton.classList.add('active');
+    } else if (tab === 'register') {
+        registerButton.classList.add('active');
+    }
+}
+
+function closeModal(event) {
+    if (event.target.id === 'logRegForm') {
+        document.getElementById('logRegForm').style.display = 'none';
+    }
+}
+
+var provinsi = [
+    "Aceh", "Sumatera Utara", "Sumatera Barat", "Riau", "Kepulauan Riau",
+    "Jambi", "Sumatera Selatan", "Bengkulu", "Kepulauan Bangka Belitung", "Lampung",
+    "Banten", "DKI Jakarta", "Jawa Barat", "Jawa Tengah", "DI Yogyakarta",
+    "Jawa Timur", "Bali", "Nusa Tenggara Barat", "Nusa Tenggara Timur", "Kalimantan Barat",
+    "Kalimantan Tengah", "Kalimantan Selatan", "Kalimantan Timur", "Kalimantan Utara", "Sulawesi Utara",
+    "Gorontalo", "Sulawesi Tengah", "Sulawesi Barat", "Sulawesi Selatan", "Sulawesi Tenggara",
+    "Maluku", "Maluku Utara", "Papua Barat", "Papua", "Papua Tengah",
+    "Papua Pegunungan", "Papua Selatan", "Papua Barat Daya"
+];
+
+var selectProvinsi = document.getElementById("provinsi");
+
+// Populate the 'Provinsi' dropdown
+for (var i = 0; i < provinsi.length; i++) {
+    var option = document.createElement("option");
+    option.value = provinsi[i];
+    option.text = provinsi[i];
+    selectProvinsi.add(option);
+};
+
+$(document).ready(function () {
+    $('#dob').datepicker({
+        format: 'yyyy-mm-dd',
+        uiLibrary: 'bootstrap5', // Use Bootstrap 5 styling
+        placeholder: 'Tanggal Lahir'
+    });
+});
+
+$(function() {
+    $('#login-form-link').click(function(e) {
+        $("#login-form").delay(100).fadeIn(100);
+        $("#register-form").fadeOut(100);
+        $('#register-form-link').removeClass('active');
+        $(this).addClass('active');
+        e.preventDefault();
+    });
+    $('#register-form-link').click(function(e) {
+        $("#register-form").delay(100).fadeIn(100);
+        $("#login-form").fadeOut(100);
+        $('#login-form-link').removeClass('active');
+        $(this).addClass('active');
+        e.preventDefault();
+    });
+});
+
+</script>
+</html>

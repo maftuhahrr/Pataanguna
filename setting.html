@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gijgo@1.9.13/css/gijgo.min.css">   
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.13/js/gijgo.min.js"></script>
+
+    <link rel="stylesheet" href="ss.css">
+</head>
+<body>
+    <div class="container">
+      <div class="row gutters-sm">
+        <div class="col-md-4 d-none d-md-block">
+          <div class="card">
+            <div class="card-body">
+                <nav class="nav flex-column nav-pills" id="settingsTabs" role="tablist">
+                    <a href="#profile" data-bs-toggle="tab" class="nav-link active" role="tab">
+                        <i class="bi bi-person-circle"></i> Profil
+                    </a>
+                    <a href="#security" data-bs-toggle="tab" class="nav-link" role="tab">
+                        <i class="bi bi-shield-lock"></i> Keamanan
+                    </a>
+                    <a href="#notification" data-bs-toggle="tab" class="nav-link" role="tab">
+                        <i class="bi bi-bell"></i> Notifikasi
+                    </a>
+                </nav>                              
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-body tab-content" id="settingsContent">
+              
+              <!-- Profile Tab -->
+              <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                <h6>Profil Anda</h6>
+                <hr>
+                <form id="profileForm" class="settingForm">
+                  <div class="col-12 col-sm-auto mb-3">
+                    <div class="mx-auto" style="width: 140px;">
+                        <img id="profilePreview" src="" class="rounded-circle" width="140" height="140" style="display: none;">
+                        <label for="profilePicUpload" class="btn btn-primary mt-2" style="white-space:nowrap;">
+                          <i class="bi bi-camera"></i> Upload&nbsp;Photo
+                      </label>
+                      <input type="file" id="profilePicUpload" class="d-none" accept="image/*">
+                    </div>
+                  </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="fullName">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="newFName" placeholder="Nama Lengkap">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="userName">Nama Akun</label>
+                            <input type="text" class="form-control" id="newUsName" placeholder="Nama Akun">
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label for="provinsi">Lokasi</label>
+                            <select class="form-control" id="newProvinsi">
+                                <option value="">Pilih Lokasi</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dob">Tanggal Lahir</label>
+                            <input type="text" id="newDob" class="form-control" placeholder="Tanggal Lahir">
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="reset" class="btn btn-secondary btnBatal">Batal</button>
+                    </div>
+                </form>
+              </div>
+
+              <!-- Security Tab -->
+              <div class="tab-pane fade" id="security" role="tabpanel">
+                <h6>PENGATURAN KEAMANAN</h6>
+                <hr>
+                <form id="securityForm" class="settingForm">
+                  <div class="form-group">
+                    <label class="d-block">Ubah Password</label>
+                    <input type="password" class="form-control" id="oldPwd" placeholder="Password Lama">
+                    <input type="password" class="form-control mt-1" id="newPwd" placeholder="Password Baru">
+                    <input type="password" class="form-control mt-1" placeholder="Konfirmasi Password Baru">
+                  </div>
+                  <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="reset" class="btn btn-secondary btnBatal">Batal</button>
+                  </div>
+                </form>
+                <form>
+                  <div class="form-group mt-3">
+                    <h5 class="d-block text-danger">Hapus Akun</h5>
+                  </div>
+                  <button class="btn btn-danger" type="button">Hapus</button>
+                </form>
+              </div>
+
+              <!-- Notifications Tab -->
+              <div class="tab-pane fade" id="notification" role="tabpanel">
+                <h6>NOTIFICATION SETTINGS</h6>
+                <hr>
+                <form>
+                  <div class="form-group">
+                    <ul class="list-group list-group-sm list-group-flush">
+                      <li class="list-group-item d-flex align-items-center">
+                          <div>
+                              <h6 class="mb-0">Balasan Pesan</h6>
+                              <small class="text-muted">Notifikasi ketika ada balasan di pesan atau forum</small>
+                          </div>
+                          <div class="form-check form-switch ms-auto">
+                              <input class="form-check-input notification-switch" type="checkbox" id="messageReplies" data-pref="messageReplies">
+                          </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                          <div>
+                              <h6 class="mb-0">Perubahan Profile</h6>
+                              <small class="text-muted">Notifikasi ketika ada perubahan pada profil Anda</small>
+                          </div>
+                          <div class="form-check form-switch ms-auto">
+                              <input class="form-check-input notification-switch" type="checkbox" id="profileChanges" data-pref="profileChanges">
+                          </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                          <div>
+                              <h6 class="mb-0">Pengingat</h6>
+                              <small class="text-muted">Pengingat untuk belajar, kuis, dan webinar</small>
+                          </div>
+                          <div class="form-check form-switch ms-auto">
+                              <input class="form-check-input notification-switch" type="checkbox" id="reminders" data-pref="reminders">
+                          </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                          <div>
+                              <h6 class="mb-0">Events</h6>
+                              <small class="text-muted">Notifikasi tentang event dan kegiatan virtual</small>
+                          </div>
+                          <div class="form-check form-switch ms-auto">
+                              <input class="form-check-input notification-switch" type="checkbox" id="events" data-pref="events">
+                          </div>
+                      </li>
+                  </ul>
+                </form>
+              </div>
+            </div> 
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Add this modal to setting.html -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Account Deletion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+        <div class="form-group">
+          <label for="deletePassword">Enter your password to confirm:</label>
+          <input type="password" class="form-control" id="deletePassword" placeholder="Your password">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete Account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="x.js" defer></script>
+<script type="module">
+  import { loadNotificationPreferences, saveNotificationPreferences } from './script/notificationFunctions.js';
+  import { setupProfileForm} from './script/profileFunctions.js';
+
+  document.addEventListener("DOMContentLoaded", setupProfileForm);
+
+  document.addEventListener("DOMContentLoaded", async function() {
+      // Load notification preferences
+      const preferences = await loadNotificationPreferences();
+      
+      if (preferences) {
+          // Set initial switch states
+          document.getElementById('messageReplies').checked = preferences.messageReplies;
+          document.getElementById('profileChanges').checked = preferences.profileChanges;
+          document.getElementById('reminders').checked = preferences.reminders;
+          document.getElementById('events').checked = preferences.events;
+      }
+      
+      // Handle form submission
+      document.getElementById('notificationForm').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const preferences = {
+              messageReplies: document.getElementById('messageReplies').checked,
+              profileChanges: document.getElementById('profileChanges').checked,
+              reminders: document.getElementById('reminders').checked,
+              events: document.getElementById('events').checked
+          };
+          
+          const success = await saveNotificationPreferences(preferences);
+          if (success) {
+              alert('Pengaturan notifikasi berhasil disimpan!');
+          } else {
+              alert('Gagal menyimpan pengaturan notifikasi. Silakan coba lagi.');
+          }
+      });
+      
+      // Optional: Save preferences immediately when switches are toggled
+      const switches = document.querySelectorAll('.notification-switch');
+      switches.forEach(switchEl => {
+          switchEl.addEventListener('change', async function() {
+              const preferences = {
+                  messageReplies: document.getElementById('messageReplies').checked,
+                  profileChanges: document.getElementById('profileChanges').checked,
+                  reminders: document.getElementById('reminders').checked,
+                  events: document.getElementById('events').checked
+              };
+              
+              await saveNotificationPreferences(preferences);
+          });
+      });
+  });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var triggerTabList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tab"]'));
+        triggerTabList.forEach(function(tabEl) {
+            tabEl.addEventListener("click", function(event) {
+                event.preventDefault();
+                var tab = new bootstrap.Tab(tabEl);
+                tab.show();
+            });
+        });
+    });
+
+    document.getElementById("profilePicUpload").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById("profilePreview").src = e.target.result;
+            document.getElementById("profilePreview").style.display = "block";
+        };
+        reader.readAsDataURL(file);
+    });
+
+    var provinsi = [
+        "Aceh", "Sumatera Utara", "Sumatera Barat", "Riau", "Kepulauan Riau",
+        "Jambi", "Sumatera Selatan", "Bengkulu", "Kepulauan Bangka Belitung", "Lampung",
+        "Banten", "DKI Jakarta", "Jawa Barat", "Jawa Tengah", "DI Yogyakarta",
+        "Jawa Timur", "Bali", "Nusa Tenggara Barat", "Nusa Tenggara Timur", "Kalimantan Barat",
+        "Kalimantan Tengah", "Kalimantan Selatan", "Kalimantan Timur", "Kalimantan Utara", "Sulawesi Utara",
+        "Gorontalo", "Sulawesi Tengah", "Sulawesi Barat", "Sulawesi Selatan", "Sulawesi Tenggara",
+        "Maluku", "Maluku Utara", "Papua Barat", "Papua", "Papua Tengah",
+        "Papua Pegunungan", "Papua Selatan", "Papua Barat Daya"
+    ];
+
+    var selectProvinsi = document.getElementById("newProvinsi");
+
+    // Populate the 'Provinsi' dropdown
+    for (var i = 0; i < provinsi.length; i++) {
+        var option = document.createElement("option");
+        option.value = provinsi[i];
+        option.text = provinsi[i];
+        selectProvinsi.add(option);
+    }
+
+    $(document).ready(function () {
+        $('#newDob').datepicker({
+            format: 'yyyy-mm-dd',
+            uiLibrary: 'bootstrap5', // Use Bootstrap 5 styling
+            placeholder: 'Tanggal Lahir'
+        });
+    });
+</script>
+</body>
+</html>
