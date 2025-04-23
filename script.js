@@ -4,7 +4,7 @@ import { checkUserRole, registerUser  } from "./script/authFunctions.js";
 import { openAdminModal, resetEventForm, handleEventImageChange, saveEvent, loadEvents, deleteEvent  } 
     from "./script/eventFunctions.js";
 import { saveActivityProgress, loadUserActivities, calculateProgress } from "./script/activityFunction.js";
-import { auth, db } from "/firebaseConf.js";
+import { auth, db } from "./firebaseConf.js";
 import { collection, addDoc, onSnapshot, query, orderBy, setDoc, updateDoc, deleteDoc, where, doc, serverTimestamp, writeBatch, limit} 
     from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { initDailyQuoteFeature, sendDailyQuoteToAllUsers, checkUpcomingWorkshopsAndNotify } from "./script/notificationFunctions.js";

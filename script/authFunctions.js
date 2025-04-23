@@ -1,6 +1,6 @@
 // Handles user authentication functions
-import { auth, db } from "/firebaseConf.js";
-import { addNotification } from "./notificationFunctions.js";
+import { auth, db } from "./firebaseConf.js";
+import { addNotification } from "./script/notificationFunctions.js";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged, updatePassword, reauthenticateWithCredential, EmailAuthProvider, deleteUser,} 
     from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 import { doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";

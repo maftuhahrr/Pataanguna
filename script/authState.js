@@ -1,8 +1,8 @@
-import { auth, db } from "/firebaseConf.js";
+import { auth, db } from "./firebaseConf.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 import { doc, getDoc,  } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-import { loadNotifications } from "./notificationFunctions.js";
-import { loadEvents } from "./eventFunctions.js";
+import { loadNotifications } from "./script/notificationFunctions.js";
+import { loadEvents } from "./script/eventFunctions.js";
 
 function calculateAge(birthdate) {
     if (!birthdate) {
