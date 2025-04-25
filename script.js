@@ -29,6 +29,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+function initModals() {
+    // Cari semua elemen dengan class .modal dan inisialisasi Bootstrap Modal
+    const modalElements = document.querySelectorAll('.modal');
+    
+    modalElements.forEach(modalEl => {
+      // Cegah duplikat
+      if (!modalEl.hasAttribute('data-bs-initialized')) {
+        new bootstrap.Modal(modalEl);
+        modalEl.setAttribute('data-bs-initialized', 'true');
+      }
+    });
+  
+    console.log("Semua modals diinisialisasi.");
+}  
+
 const modalEl = document.getElementById('workshopRegistrationModal');
 const apps = Vue.createApp({
     mixins: [chatFunction],
@@ -392,7 +407,7 @@ const apps = Vue.createApp({
             this.shuffleQuestions();
             this.resetKalkulator();
             this.loadNotifications();
-            //initModals();
+            initModals();
             
             // 5. Jika expert, setup chat listeners
             if (this.isExpert) {
