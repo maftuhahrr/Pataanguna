@@ -30,21 +30,14 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function initModals() {
-    // Cari semua elemen dengan class .modal dan inisialisasi Bootstrap Modal
+    // Inisialisasi modal-modal Bootstrap di sini
+    // Contoh:
     const modalElements = document.querySelectorAll('.modal');
-    
     modalElements.forEach(modalEl => {
-      // Cegah duplikat
-      if (!modalEl.hasAttribute('data-bs-initialized')) {
         new bootstrap.Modal(modalEl);
-        modalEl.setAttribute('data-bs-initialized', 'true');
-      }
     });
-  
-    console.log("Semua modals diinisialisasi.");
-}  
+}
 
-const modalEl = document.getElementById('workshopRegistrationModal');
 const apps = Vue.createApp({
     mixins: [chatFunction], 
     data() {
