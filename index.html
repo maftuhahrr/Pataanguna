@@ -33,7 +33,7 @@
 <body>
 <div id="apps">
 <!-- Login/Registration Modal -->
-<div id="logRegForm" class="modal-overlay" style="display: none;" onclick="closeModal(event)">
+<div id="logRegForm" class="modal-overlay" style="display: none;">
   <div class="modal-content">
       
       <!-- Tab Navigation -->
@@ -217,7 +217,7 @@
               <!-- Signed-out UI -->
               <div id="signedOutNav">
                   <li class="nav-item">
-                    <a class="nav-link btn btnGreen" href="#" id="loginBtn">
+                    <a class="nav-link btn btnGreen" href="#" @click.prevent="showLoginModal">
                         Masuk
                     </a>
                   </li>
@@ -956,18 +956,22 @@
 <script type="module" src="script.js"></script>
 </body>
 <script>
-    
 function switchTab(tab) {
     document.getElementById('login-form').style.display = (tab === 'login') ? 'block' : 'none';
     document.getElementById('register-form').style.display = (tab === 'register') ? 'block' : 'none';
-    
-    // Update active tab styling
-    document.querySelectorAll('.tab-buttons button').forEach(btn => {
-        btn.classList.toggle('active', 
-            (tab === 'login' && btn.textContent.includes('Login')) || 
-            (tab === 'register' && btn.textContent.includes('Register'))
-        );
-    });
+    const loginButton = document.querySelector('.tab-buttons button:first-child');
+    const registerButton = document.querySelector('.tab-buttons button:last-child');
+
+    // Remove 'active' from both buttons
+    loginButton.classList.remove('active');
+    registerButton.classList.remove('active');
+
+    // Add 'active' to the clicked button
+    if (tab === 'login') {
+        loginButton.classList.add('active');
+    } else if (tab === 'register') {
+        registerButton.classList.add('active');
+    }
 }
 
 function closeModal(event) {

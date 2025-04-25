@@ -1585,3 +1585,7 @@ body.modal-open .modal-backdrop.fade.show:not(:first-of-type) {
   background-color: #f8f9fa;
   border-top: 1px solid #eee;
 }
+
+a.btnGreen[href="#"] {
+  pointer-events: none; /* Prevent default anchor behavior */
+}

@@ -1410,6 +1410,14 @@ const apps = Vue.createApp({
     alert('Anda harus masuk dahulu')
     },
 
+    showLoginModal() {
+        const modal = document.getElementById('logRegForm');
+        if (modal) {
+            modal.style.display = 'block';
+            switchTab('login'); // Make sure login tab is active
+        }
+    },
+
       async initAuth() {
         return new Promise((resolve) => {
             auth.onAuthStateChanged(user => {
