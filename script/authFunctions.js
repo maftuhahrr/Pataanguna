@@ -60,7 +60,7 @@ export async function logoutUser() {
     try {
         await signOut(auth);
         alert("Sampai Jumpa!!");
-        window.location.href = '/index.html';
+        window.location.href = "/Pataanguna/index.html";
     } catch (error) {
         alert(error.message);
     }
@@ -132,7 +132,7 @@ export async function changeUserPassword(oldPassword, newPassword) {
         alert("Password berhasil diubah!");
 
         await addNotification(user.uid, "Password Diubah", "Akun password anda telah berubah.");
-        window.location.href = '/index.html';
+        window.location.href = "/Pataanguna/index.html";
     } catch (error) {
         alert("Error: " + error.message);
     }
@@ -185,7 +185,7 @@ export async function deleteUserAccount(password) {
         await deleteUser(user);
 
         alert("Your account has been deleted successfully.");
-        window.location.href = "/index.html"; // Redirect to home page after deletion
+        window.location.href = "/Pataanguna/index.html"; // Redirect to home page after deletion
     } catch (error) {
         alert("Error deleting account: " + error.message);
     }

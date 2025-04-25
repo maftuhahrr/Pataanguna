@@ -472,7 +472,7 @@ const apps = Vue.createApp({
           },
           exitQuiz() {
               this.quizFinished = true;
-              window.location.href = 'index.html';
+              window.location.href = "/Pataanguna/index.html";
           },
           feedbackClass(qIndex) {
               return this.userAnswers[qIndex].correct ? "alert-success" : "alert-danger";

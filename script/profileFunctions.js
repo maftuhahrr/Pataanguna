@@ -154,8 +154,8 @@ export function setupProfileForm() {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (!user) {
                 // Only redirect if we're not already on index page
-                if (!window.location.pathname.endsWith('index.html')) {
-                    window.location.href = '/index.html';
+                if (!window.location.pathname.endsWith('/Pataanguna/index.html')) {
+                    window.location.href = "/Pataanguna/index.html";
                 }
                 return resolve(false);
             }
