@@ -46,8 +46,7 @@ function initModals() {
 
 const modalEl = document.getElementById('workshopRegistrationModal');
 const apps = Vue.createApp({
-    mixins: [chatFunction],
-    
+    mixins: [chatFunction], 
     data() {
           return {
               activeSection: 'home', // Default section
@@ -357,7 +356,8 @@ const apps = Vue.createApp({
           
     };
 
-    },  
+    },
+
     mounted() {
         // 1. Inisialisasi auth dan dapatkan user pertama kali
         this.initAuth().then(async () => {
