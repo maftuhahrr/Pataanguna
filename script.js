@@ -29,9 +29,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+const modalEl = document.getElementById('workshopRegistrationModal');
 function initModals() {
-    // Inisialisasi modal-modal Bootstrap di sini
-    // Contoh:
     const modalElements = document.querySelectorAll('.modal');
     modalElements.forEach(modalEl => {
         new bootstrap.Modal(modalEl);
