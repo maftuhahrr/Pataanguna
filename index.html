@@ -217,9 +217,9 @@
               <!-- Signed-out UI -->
               <div id="signedOutNav">
                   <li class="nav-item">
-                      <a class="nav-link btn btnGreen" href="#" onclick="document.getElementById('logRegForm').style.display = 'block';">
-                          Masuk
-                      </a>
+                    <a class="nav-link btn btnGreen" href="#" id="loginBtn">
+                        Masuk
+                    </a>
                   </li>
               </div>
           </ul>
@@ -956,22 +956,18 @@
 <script type="module" src="script.js"></script>
 </body>
 <script>
+    
 function switchTab(tab) {
     document.getElementById('login-form').style.display = (tab === 'login') ? 'block' : 'none';
     document.getElementById('register-form').style.display = (tab === 'register') ? 'block' : 'none';
-    const loginButton = document.querySelector('.tab-buttons button:first-child');
-    const registerButton = document.querySelector('.tab-buttons button:last-child');
-
-    // Remove 'active' from both buttons
-    loginButton.classList.remove('active');
-    registerButton.classList.remove('active');
-
-    // Add 'active' to the clicked button
-    if (tab === 'login') {
-        loginButton.classList.add('active');
-    } else if (tab === 'register') {
-        registerButton.classList.add('active');
-    }
+    
+    // Update active tab styling
+    document.querySelectorAll('.tab-buttons button').forEach(btn => {
+        btn.classList.toggle('active', 
+            (tab === 'login' && btn.textContent.includes('Login')) || 
+            (tab === 'register' && btn.textContent.includes('Register'))
+        );
+    });
 }
 
 function closeModal(event) {

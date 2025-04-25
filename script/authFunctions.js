@@ -140,7 +140,8 @@ export async function changeUserPassword(oldPassword, newPassword) {
 
 // Attach event listeners
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("submitReg").addEventListener("click", async (e) => {
+    // 1. Handle registration form submission
+    document.getElementById("submitReg")?.addEventListener("click", async (e) => {
         e.preventDefault();
         const email = document.getElementById("mail").value;
         const password = document.getElementById("pwd").value;
@@ -150,19 +151,31 @@ document.addEventListener("DOMContentLoaded", function () {
         const location = document.getElementById("provinsi").value;
         const dob = document.getElementById("dob").value;
         
-        registerUser(email, password, confirmPassword, username, location, dob, fullName);
+        await registerUser(email, password, confirmPassword, username, location, dob, fullName);
     });
     
-    document.getElementById("login").addEventListener("click", async (e) => {
+    // 2. Handle login form submission
+    document.getElementById("login")?.addEventListener("click", async (e) => {
         e.preventDefault();
         const email = document.getElementById("logMail").value;
         const password = document.getElementById("logPwd").value;
-        loginUser(email, password);
+        await loginUser(email, password);
     });
 
-    document.getElementById("logoutBtn").addEventListener("click", async (e) => {
+    // 3. Handle logout button
+    document.getElementById("logoutBtn")?.addEventListener("click", async (e) => {
         e.preventDefault();
-        logoutUser();
+        await logoutUser();
+    });
+
+    // 4. NEW: Handle login button click (opens modal)
+    document.getElementById("loginBtn")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        const loginModal = document.getElementById("logRegForm");
+        if (loginModal) {
+            loginModal.style.display = "block";
+            switchTab('login'); // Make sure login tab is shown
+        }
     });
 });
 
