@@ -1,4 +1,4 @@
-import { db, auth } from "/firebaseConf.js";
+import { db, auth } from "/Pataanguna/firebaseConf.js";
 import { collection, addDoc, query, orderBy, onSnapshot, where, updateDoc, getDocs, doc, getDoc, deleteDoc } 
     from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-messaging.js";

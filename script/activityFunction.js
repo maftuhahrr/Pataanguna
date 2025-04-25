@@ -1,11 +1,6 @@
-import { db, auth } from "/firebaseConf.js";
-import { 
-  collection, 
-  addDoc, 
-  query, 
-  orderBy, 
-  onSnapshot 
-} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { db, auth } from "/Pataanguna/firebaseConf.js";
+import { collection, addDoc, query, orderBy, onSnapshot } 
+  from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 
 // 🔹 Enhanced save activity function with auth state guarantee

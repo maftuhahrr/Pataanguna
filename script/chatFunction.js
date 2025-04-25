@@ -1,4 +1,4 @@
-import { auth, db } from "/firebaseConf.js";
+import { auth, db } from "/Pataanguna/firebaseConf.js";
 import { collection, addDoc, query, where, orderBy, onSnapshot, 
     doc, getDoc, getDocs, updateDoc, or, and, limit, serverTimestamp 
   } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
