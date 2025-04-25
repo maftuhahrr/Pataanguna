@@ -392,7 +392,7 @@ const apps = Vue.createApp({
             this.shuffleQuestions();
             this.resetKalkulator();
             this.loadNotifications();
-            initModals();
+            //initModals();
             
             // 5. Jika expert, setup chat listeners
             if (this.isExpert) {
