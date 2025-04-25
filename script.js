@@ -1414,7 +1414,9 @@ const apps = Vue.createApp({
         const modal = document.getElementById('logRegForm');
         if (modal) {
             modal.style.display = 'block';
-            switchTab('login'); // Make sure login tab is active
+            // Reset forms when opening modal
+            document.getElementById('login-form').reset();
+            document.getElementById('register-form').reset();
         }
     },
 

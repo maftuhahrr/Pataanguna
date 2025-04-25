@@ -94,10 +94,10 @@ body {
     background-color: #C69C6D;  
 }
 
-.btnGreen {
+/* .btnGreen {
     background-color: #2E7D32;
     color: #E0E0E0;
-}
+} */
 
 .btnGreen:hover {
     background-color: #2E7D32; 
@@ -1586,6 +1586,27 @@ body.modal-open .modal-backdrop.fade.show:not(:first-of-type) {
   border-top: 1px solid #eee;
 }
 
-a.btnGreen[href="#"] {
-  pointer-events: none; /* Prevent default anchor behavior */
+/* Add these rules to fix button issues */
+.btnGreen {
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block; /* Ensures proper button sizing */
+  border: none; /* Remove default button border */
+  outline: none; /* Remove focus outline */
+}
+
+/* Prevent any parent elements from interfering with clicks */
+.nav-link {
+  pointer-events: auto !important;
+}
+
+/* Ensure modal is above other content */
+.modal-overlay {
+  z-index: 9999 !important;
+}
+
+/* Make sure button is clickable */
+.navbar-nav .btnGreen {
+  position: relative;
+  z-index: 1;
 }
