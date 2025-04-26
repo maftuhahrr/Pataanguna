@@ -241,10 +241,10 @@ header .container{
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    display: flex;
+    /* display: flex; */
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 9000;
     backdrop-filter: blur(3px);
 }
 
@@ -1588,25 +1588,20 @@ body.modal-open .modal-backdrop.fade.show:not(:first-of-type) {
 
 /* Add these rules to fix button issues */
 .btnGreen {
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block; /* Ensures proper button sizing */
-  border: none; /* Remove default button border */
-  outline: none; /* Remove focus outline */
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block; /* Ensures proper button sizing */
+    border: none; /* Remove default button border */
+    outline: none; /* Remove focus outline */
 }
 
 /* Prevent any parent elements from interfering with clicks */
 .nav-link {
-  pointer-events: auto !important;
-}
-
-/* Ensure modal is above other content */
-.modal-overlay {
-  z-index: 9999 !important;
+    pointer-events: auto !important;
 }
 
 /* Make sure button is clickable */
 .navbar-nav .btnGreen {
-  position: relative;
-  z-index: 1;
+    position: relative;
+    z-index: 1;
 }
