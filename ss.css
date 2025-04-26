@@ -1203,6 +1203,10 @@ body.modal-open .modal-backdrop.fade.show:not(:first-of-type) {
   display: none;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 .footer {
   text-align: center;
   padding: 20px;

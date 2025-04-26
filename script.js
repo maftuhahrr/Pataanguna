@@ -47,6 +47,7 @@ const apps = Vue.createApp({
               showAbout: false,
               showContact: false,
               isAdmin:false,
+              isModalVisible: false,
 
             showExpertModal: false, // ✅ Controls modal visibility
             experts: [], // ✅ Stores expert list
@@ -1411,16 +1412,25 @@ const apps = Vue.createApp({
     },
 
     showLoginModal() {
-        const modal = document.getElementById('logRegForm');
-        if (modal) {
-            modal.style.display = 'block';
-            // Reset forms when opening modal
-            document.getElementById('login-form').reset();
-            document.getElementById('register-form').reset();
+        this.isModalVisible = true;
+        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+    },
+
+    closeModal() {
+        this.isModalVisible = false;
+        document.body.style.overflow = ''; // Re-enable scrolling
+    },
+
+    handleOutsideClick(event) {
+        console.log("Clicked target:", event.target);
+        const modalContent = document.querySelector('.modal-content');
+        console.log("Modal content contains target?", modalContent.contains(event.target));
+        if (!modalContent.contains(event.target)) {
+            this.closeModal();
         }
     },
 
-      async initAuth() {
+    async initAuth() {
         return new Promise((resolve) => {
             auth.onAuthStateChanged(user => {
                 this.currentUser = user;
