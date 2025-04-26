@@ -1421,15 +1421,6 @@ const apps = Vue.createApp({
         document.body.style.overflow = ''; // Re-enable scrolling
     },
 
-    handleOutsideClick(event) {
-        console.log("Clicked target:", event.target);
-        const modalContent = document.querySelector('.modal-content');
-        console.log("Modal content contains target?", modalContent.contains(event.target));
-        if (!modalContent.contains(event.target)) {
-            this.closeModal();
-        }
-    },
-
     async initAuth() {
         return new Promise((resolve) => {
             auth.onAuthStateChanged(user => {

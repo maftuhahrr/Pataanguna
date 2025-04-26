@@ -33,7 +33,7 @@
 <body>
 <div id="apps">
 <!-- Login/Registration Modal -->
-<div id="logRegForm" class="modal-overlay" v-if="isModalVisible @click="handleOutsideClick">
+<div id="logRegForm" class="modal-overlay" v-if="isModalVisible" @click.self="closeModal">
   <div class="modal-content"  @click.stop>
       <!-- Tab Navigation -->
       <div class="tab-buttons">
