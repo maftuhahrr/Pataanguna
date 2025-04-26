@@ -1413,12 +1413,10 @@ const apps = Vue.createApp({
 
     showLoginModal() {
         this.isModalVisible = true;
-        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
     },
 
     closeModal() {
         this.isModalVisible = false;
-        document.body.style.overflow = ''; // Re-enable scrolling
     },
 
     async initAuth() {
