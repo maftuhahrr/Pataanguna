@@ -155,12 +155,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     
     // 2. Handle login form submission
-    document.getElementById("login")?.addEventListener("click", async (e) => {
-        e.preventDefault();
-        const email = document.getElementById("logMail").value;
-        const password = document.getElementById("logPwd").value;
-        await loginUser(email, password);
-    });
+    // document.getElementById("login")?.addEventListener("click", async (e) => {
+    //     e.preventDefault();
+    //     const email = document.getElementById("logMail").value;
+    //     const password = document.getElementById("logPwd").value;
+    //     await loginUser(email, password);
+    // });
 
     // 3. Handle logout button
     document.getElementById("logoutBtn")?.addEventListener("click", async (e) => {

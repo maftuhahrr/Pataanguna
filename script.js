@@ -96,6 +96,11 @@ const apps = Vue.createApp({
             currentForumPage: 1,
             forumsPerPage: 5,
 
+            loginForm: {
+                email: '',
+                password: ''
+            },
+
               sections: [
               {
                     title: "Literasi Kesehatan",
@@ -1618,6 +1623,24 @@ const apps = Vue.createApp({
             });
         } else {
             this.registrationModal.show();
+        }
+    },
+
+    async handleLogin() {
+        try {
+          const email = document.getElementById("logMail").value;
+          const password = document.getElementById("logPwd").value;
+          
+          await loginUser(email, password);
+          
+          // Close modal after successful login
+          this.isModalVisible = false;
+          
+          // Redirect or update UI as needed
+          window.location.reload();
+        } catch (error) {
+          console.error("Login error:", error);
+          alert(error.message || "Login failed");
         }
     },
 
