@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-import { getAuth} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+import { getAuth, setPersistence, browserSessionPersistence} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 import { getFirestore} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { getMessaging } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-messaging.js";
 
@@ -17,5 +17,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const messaging = getMessaging(app);
+setPersistence(auth, browserSessionPersistence);
 
 export { auth, db, messaging };
