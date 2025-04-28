@@ -94,6 +94,15 @@ body {
     background-color: #C69C6D;  
 }
 
+.btnGreen {
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block; /* Ensures proper button sizing */
+  border: none; /* Remove default button border */
+  outline: none; /* Remove focus outline */
+  background-color: #2E7D32;
+  color: #E0E0E0;
+}
 
 .btnGreen:hover {
     background-color: #2E7D32;
@@ -1581,17 +1590,6 @@ body.modal-open .modal-backdrop.fade.show:not(:first-of-type) {
   padding: 10px 15px;
   background-color: #f8f9fa;
   border-top: 1px solid #eee;
-}
-
-/* Add these rules to fix button issues */
-.btnGreen {
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block; /* Ensures proper button sizing */
-    border: none; /* Remove default button border */
-    outline: none; /* Remove focus outline */
-    background-color: #2E7D32;
-    color: #E0E0E0;
 }
 
 /* Prevent any parent elements from interfering with clicks */
