@@ -385,6 +385,14 @@ const apps = Vue.createApp({
                 initDailyQuoteFeature();  // ✅ panggil hanya jika user sudah login
                 checkUpcomingWorkshopsAndNotify(this.currentUser.uid);
             }
+            
+            const logoutBtn = document.getElementById("logoutBtn");
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    await logoutUser();
+                });
+            }
 
         }).then(() => {
             console.log('User role checked, isExpert:', this.isExpert);
