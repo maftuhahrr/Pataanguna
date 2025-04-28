@@ -226,3 +226,64 @@ export async function getUserData(userId) {
         return userData;
     }
 }
+
+export function loadForumsWithSort(callback, sortBy = 'timestamp') {
+    let q;
+    if (sortBy === 'timestamp') {
+        q = query(collection(db, "forums"), orderBy("timestamp", "desc"));
+    } else if (sortBy === 'popular') {
+        q = query(collection(db, "forums"), orderBy("replyCount", "desc"));
+    }
+
+    return onSnapshot(q, async (snapshot) => {
+        const forums = await processForumSnapshot(snapshot);
+        if (callback) callback(forums);
+    });
+}
+
+// Function to search forums
+export function searchForums(searchTerm, callback) {
+    const q = query(collection(db, "forums"), orderBy("title"));
+    
+    return onSnapshot(q, async (snapshot) => {
+        const forums = await processForumSnapshot(snapshot);
+        const filteredForums = forums.filter(forum => 
+            forum.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+            forum.description.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        if (callback) callback(filteredForums);
+    });
+}
+
+// Helper function to process forum snapshot
+async function processForumSnapshot(snapshot) {
+    const forums = [];
+    const userIds = new Set();
+    
+    snapshot.docs.forEach(doc => {
+        const data = doc.data();
+        if (data.userId) userIds.add(data.userId);
+    });
+
+    const userData = await getUserData(Array.from(userIds));
+
+    for (const doc of snapshot.docs) {
+        const data = doc.data();
+        const user = data.userId ? userData[data.userId] : null;
+        const repliesQuery = query(
+            collection(db, "forum_replies"),
+            where("forumId", "==", doc.id)
+        );
+        const repliesSnapshot = await getDocs(repliesQuery);
+        
+        forums.push({ 
+            id: doc.id, 
+            ...data,
+            userProfilePic: user?.profilePic || data.userProfilePic || "https://bootdey.com/img/Content/avatar/avatar1.png",
+            username: user?.username || data.username,
+            replyCount: repliesSnapshot.size
+        });
+    }
+    
+    return forums;
+}

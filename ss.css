@@ -94,13 +94,10 @@ body {
     background-color: #C69C6D;  
 }
 
-/* .btnGreen {
-    background-color: #2E7D32;
-    color: #E0E0E0;
-} */
 
 .btnGreen:hover {
-    background-color: #2E7D32; 
+    background-color: #2E7D32;
+    color: black; 
 }
 
 .content-section {
@@ -1593,6 +1590,8 @@ body.modal-open .modal-backdrop.fade.show:not(:first-of-type) {
     display: inline-block; /* Ensures proper button sizing */
     border: none; /* Remove default button border */
     outline: none; /* Remove focus outline */
+    background-color: #2E7D32;
+    color: #E0E0E0;
 }
 
 /* Prevent any parent elements from interfering with clicks */

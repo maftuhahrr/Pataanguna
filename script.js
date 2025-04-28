@@ -91,6 +91,11 @@ const apps = Vue.createApp({
             unsubscribeNotifications: null,
             expandedNotificationId: null,
 
+            forumSortBy: 'timestamp',
+            forumSearchTerm: '',
+            currentForumPage: 1,
+            forumsPerPage: 5,
+
               sections: [
               {
                     title: "Literasi Kesehatan",
@@ -858,6 +863,12 @@ const apps = Vue.createApp({
     },
     
     async confirmWorkshopRegistration() {
+        if (!this.currentUser) {
+            this.showLoginModal();
+            this.showRegistrationModal = false;
+            return;
+        }
+    
         try {
             await addDoc(collection(db, "registrations"), {
                 workshopId: this.selectedWorkshop.id,
@@ -866,7 +877,13 @@ const apps = Vue.createApp({
                 status: "pending"
             });
             
-            this.registrationModal.hide();
+            // Update UI optimistically
+            const workshopIndex = this.workshops.findIndex(w => w.id === this.selectedWorkshop.id);
+            if (workshopIndex >= 0) {
+                this.workshops[workshopIndex].registered = true;
+            }
+            
+            this.showRegistrationModal = false;
             alert("Anda telah terdaftar untuk workshop ini!");
         } catch (error) {
             console.error("Registration error:", error);
@@ -1555,6 +1572,53 @@ const apps = Vue.createApp({
     viewAllNotifications() {
         // Arahkan ke halaman notifikasi lengkap jika ada
         console.log("View all notifications clicked");
+    },
+
+    changeForumSort(sortBy) {
+        this.forumSortBy = sortBy;
+        this.setupForumListeners();
+    },
+    
+    searchForums() {
+        if (this.forumSearchTerm.trim() === '') {
+            this.setupForumListeners();
+        } else {
+            if (this.unsubscribeForums) {
+                this.unsubscribeForums();
+            }
+            this.unsubscribeForums = searchForums(this.forumSearchTerm, (forums) => {
+                this.forums = forums;
+            });
+        }
+    },
+    
+    changeForumPage(page) {
+        this.currentForumPage = page;
+    },
+
+    handleWorkshopRegistration(workshop) {
+        if (!this.currentUser) {
+            this.showLoginModal();
+            return;
+        }
+        this.openWorkshopRegistrationModal(workshop);
+    },
+    
+    openWorkshopRegistrationModal(workshop) {
+        this.selectedWorkshop = workshop;
+        this.showRegistrationModal = true;
+        
+        // Initialize modal if not already done
+        if (!this.registrationModal) {
+            this.$nextTick(() => {
+                this.registrationModal = new bootstrap.Modal(
+                    document.getElementById('workshopRegistrationModal')
+                );
+                this.registrationModal.show();
+            });
+        } else {
+            this.registrationModal.show();
+        }
     },
 
     },

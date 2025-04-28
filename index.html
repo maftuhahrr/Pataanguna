@@ -391,7 +391,7 @@
                     <img :src="workshop.image" :alt="workshop.title" style="max-width: 100%; height: auto; margin-bottom: 15px;">
                     <h5><strong>{{ workshop.title }}</strong></h5>
                     <p>{{ workshop.date }}</p>
-                    <button v-if="!workshop.registered" class="btn btn-primary" @click="openWorkshopRegistrationModal(workshop)">Daftar</button>
+                    <button v-if="!workshop.registered" class="btn btn-primary" @click="handleWorkshopRegistration(workshop)"> Daftar </button>
                     <button v-else class="btn btn-success" disabled>Terdaftar</button>
                     <div :class="{ 'hidden-admin': !isAdmin }" class="icon-container">
                         <a href="#" class="icon-link icon-edit" @click="editWorkshop(workshop)"><i class="bi bi-pencil-fill"></i></a>
@@ -442,34 +442,32 @@
     </div>
     </div>
     <!-- Workshop Registration Modal -->
-    <div class="modal fade" v-show="showRegistrationModal" id="workshopRegistrationModal" tabindex="-1" aria-hidden="true" style="display: block; background: rgba(0,0,0,0.5);">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Daftar Workshop</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <img :src="selectedWorkshop.image" alt="Workshop Image" class="img-fluid mb-3" v-if="selectedWorkshop">
-                    <h4 v-if="selectedWorkshop">{{ selectedWorkshop.title }}</h4>
-                    <p v-if="selectedWorkshop"><strong>Tanggal:</strong> {{ selectedWorkshop.date }}</p>
-                    <p v-if="selectedWorkshop"><strong>Deskripsi:</strong> {{ selectedWorkshop.description }}</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btnBatal" data-bs-dismiss="modal">Batal</button>
-                    <button 
-                        type="button" 
+<div class="modal fade" id="workshopRegistrationModal" tabindex="-1" aria-hidden="true" v-show="showRegistrationModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Daftar Workshop</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="showRegistrationModal = false"></button>
+            </div>
+            <div class="modal-body">
+                <img :src="selectedWorkshop?.image" alt="Workshop Image" class="img-fluid mb-3" v-if="selectedWorkshop?.image">
+                <h4 v-if="selectedWorkshop">{{ selectedWorkshop.title }}</h4>
+                <p v-if="selectedWorkshop"><strong>Tanggal:</strong> {{ selectedWorkshop.date }}</p>
+                <p v-if="selectedWorkshop"><strong>Deskripsi:</strong> {{ selectedWorkshop.description }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btnBatal" data-bs-dismiss="modal" @click="showRegistrationModal = false">Batal</button>
+                <button type="button" 
                         class="btn" 
                         :class="selectedWorkshop?.registered ? 'btn-success' : 'btn-primary'"
                         :disabled="selectedWorkshop?.registered"
-                        @click="confirmWorkshopRegistration"
-                    >
-                        {{ selectedWorkshop?.registered ? 'Terdaftar' : 'Daftar' }}
-                    </button>
-                </div>
+                        @click="confirmWorkshopRegistration">
+                    {{ selectedWorkshop?.registered ? 'Terdaftar' : 'Daftar' }}
+                </button>
             </div>
         </div>
     </div>
+</div>
 </section>
 
 <section class="content-section" v-if="activeSection === 'konsultasi'" id="konsultasi">
@@ -645,26 +643,32 @@
                 <i class="material-icons">arrow_forward_ios</i>
             </a>
             <div class="d-flex align-items-center">
-                <select class="custom-select custom-select-sm w-auto mr-2 same-height">
-                    <option selected="">Terbaru</option>
-                    <option value="1">Terpopuler</option>
+                <select class="custom-select custom-select-sm w-auto mr-2 same-height" 
+                        v-model="forumSortBy" @change="changeForumSort(forumSortBy)">
+                    <option value="timestamp">Terbaru</option>
+                    <option value="popular">Terpopuler</option>
                 </select>
                 <span class="input-icon input-icon-sm w-auto same-height">
-                    <input type="text" class="form-control form-control-sm bg-gray-200 border-gray-200 shadow-none" placeholder="Cari" />
+                    <input type="text" class="form-control form-control-sm bg-gray-200 border-gray-200 shadow-none" 
+                           placeholder="Cari" v-model="forumSearchTerm" @input="searchForums"/>
                 </span>
             </div>
             <nav aria-label="Forum pagination">
                 <ul class="pagination mb-0">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a>
+                    <li class="page-item" :class="{ 'disabled': currentForumPage === 1 }">
+                        <a class="page-link" href="#" @click.prevent="changeForumPage(currentForumPage - 1)">«</a>
                     </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
+                    <li class="page-item" :class="{ 'active': currentForumPage === 1 }">
+                        <a class="page-link" href="#" @click.prevent="changeForumPage(1)">1</a>
                     </li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item" :class="{ 'active': currentForumPage === 2 }">
+                        <a class="page-link" href="#" @click.prevent="changeForumPage(2)">2</a>
+                    </li>
+                    <li class="page-item" :class="{ 'active': currentForumPage === 3 }">
+                        <a class="page-link" href="#" @click.prevent="changeForumPage(3)">3</a>
+                    </li>
                     <li class="page-item">
-                        <a class="page-link" href="#" id="nextPage">»</a>
+                        <a class="page-link" href="#" id="nextPage" @click.prevent="changeForumPage(currentForumPage + 1)">»</a>
                     </li>
                 </ul>
             </nav>
