@@ -1,6 +1,6 @@
 import chatFunction from "./script/chatFunction.js";
 import { addForum, loadForums,  addForumReply, loadForumReplies, getUserData} from "./script/forumFunctions.js";
-import { checkUserRole, registerUser, loginUser  } from "./script/authFunctions.js";
+import { checkUserRole, registerUser, loginUser, logoutUser  } from "./script/authFunctions.js";
 import { openAdminModal, resetEventForm, handleEventImageChange, saveEvent, loadEvents, deleteEvent  } 
     from "./script/eventFunctions.js";
 import { saveActivityProgress, loadUserActivities, calculateProgress } from "./script/activityFunction.js";
@@ -385,7 +385,7 @@ const apps = Vue.createApp({
                 initDailyQuoteFeature();  // ✅ panggil hanya jika user sudah login
                 checkUpcomingWorkshopsAndNotify(this.currentUser.uid);
             }
-            
+
             const logoutBtn = document.getElementById("logoutBtn");
             if (logoutBtn) {
                 logoutBtn.addEventListener("click", async (e) => {
