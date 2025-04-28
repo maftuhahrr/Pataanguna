@@ -1,6 +1,6 @@
 import chatFunction from "./script/chatFunction.js";
 import { addForum, loadForums,  addForumReply, loadForumReplies, getUserData} from "./script/forumFunctions.js";
-import { checkUserRole, registerUser, registerUser, loginUser  } from "./script/authFunctions.js";
+import { checkUserRole, registerUser, loginUser  } from "./script/authFunctions.js";
 import { openAdminModal, resetEventForm, handleEventImageChange, saveEvent, loadEvents, deleteEvent  } 
     from "./script/eventFunctions.js";
 import { saveActivityProgress, loadUserActivities, calculateProgress } from "./script/activityFunction.js";
@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
             registerUser(email, password, confirmPassword, username, location, dob, fullName);
         });
     }
+    apps.mount("#apps");
 });
 
 const modalEl = document.getElementById('workshopRegistrationModal');
@@ -1630,14 +1631,8 @@ const apps = Vue.createApp({
         try {
           const email = document.getElementById("logMail").value;
           const password = document.getElementById("logPwd").value;
-          
           await loginUser(email, password);
-          
-          // Close modal after successful login
           this.isModalVisible = false;
-          
-          // Redirect or update UI as needed
-          window.location.reload();
         } catch (error) {
           console.error("Login error:", error);
           alert(error.message || "Login failed");
@@ -1648,7 +1643,5 @@ const apps = Vue.createApp({
     }
 );
 
-apps.mount("#apps");
+//apps.mount("#apps");
 window.vueApp = apps;
-
-
