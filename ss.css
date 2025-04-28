@@ -95,11 +95,6 @@ body {
 }
 
 .btnGreen {
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block; /* Ensures proper button sizing */
-  border: none; /* Remove default button border */
-  outline: none; /* Remove focus outline */
   background-color: #2E7D32;
   color: #E0E0E0;
 }
@@ -1601,4 +1596,9 @@ body.modal-open .modal-backdrop.fade.show:not(:first-of-type) {
 .navbar-nav .btnGreen {
     position: relative;
     z-index: 1;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block; /* Ensures proper button sizing */
+    border: none; /* Remove default button border */
+    outline: none; /* Remove focus outline */
 }
